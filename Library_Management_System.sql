@@ -35,7 +35,7 @@ Create Table Financial_fines(
 	BorrowingID INT,
 	Amount decimal(8,2),
 	PaymentStatus VARCHAR(6) NOT NULL CHECK (PaymentStatus IN('Paid', 'Unpaid')),
-	FOREIGN KEY (BorrowingID) REFERENCES Borrowing(ID),
+	FOREIGN KEY (BorrowingID) REFERENCES Borrowing(ID)
 );
 
 Create Table Reservations(
@@ -104,18 +104,18 @@ INSERT INTO Borrowing (MemberID, BookID, BorrowingDate, DueDate, ReturnDate) VAL
 (1, 2, '2024-01-02', '2024-01-10', '2024-01-09'),
 (2, 3, '2024-01-05', '2024-01-12', NULL),
 (5, 6, '2024-04-15', '2024-04-25', NULL),
-(8, 3, '2024-01-05', '2024-01-12','2024-01-02' ),
+(8, 3, '2024-01-05', '2024-01-12','2024-01-11' ),
 (6, 7, '2023-11-20', '2023-11-30', '2023-12-01'),
 (10, 1, '2025-01-01', '2025-01-10', NULL),
-(5, 3, '2024-01-05', '2024-01-12','2024-01-02' ),
-(10, 3, '2024-01-05', '2024-01-12','2024-01-02' ),
+(5, 3, '2024-01-05', '2024-01-12','2024-01-13' ),
+(10, 3, '2024-01-05', '2024-01-12','2024-01-08' ),
 (9, 5, '2024-01-03', '2024-01-04','2024-01-04' );
+
 -- Insert data into Financial_fines table
 INSERT INTO Financial_fines (BorrowingID, Amount, PaymentStatus) VALUES
 (3, 5.00, 'Unpaid'),
 (5, 2.50, 'Paid'),
 (1, 3.75, 'Unpaid');
-
 
 -- Insert data into Reservations table
 INSERT INTO Reservations (MemberID, BookID, ReservationDate, Status) VALUES
@@ -211,16 +211,16 @@ where ReturnDate is not null and BookTitle='C# Programming';
 Select * 
 From Members 
 Join Borrowing ON Borrowing.MemberID = Members.ID
-Join Books ON Books.ID = Borrowing.BookID
 where DueDate < ReturnDate;
 
 --9. Select books borrowed more than 3 times
 --👉 Question:
 --Write an SQL query to find books that have been borrowed more than 3 times.
-Select BookTitle,count(BookID) AS BorrowingCount
+Select Books.ID, BookTitle,count(BookID) AS BorrowingCount
 From  Books 
 Join Borrowing ON Borrowing.BookID = Books.ID
-Group by BookTitle HAVING count(BookID)>3;
+Group by Books.ID,BookTitle 
+HAVING count(BookID)>3;
 
 --10. Find members who have borrowed books between two dates
 --👉 Question:
@@ -228,7 +228,6 @@ Group by BookTitle HAVING count(BookID)>3;
 Select * 
 From Members 
 Join Borrowing ON Borrowing.MemberID = Members.ID
-Join Books ON Books.ID = Borrowing.BookID
 where BorrowingDate between '2024-01-01' AND '2024-01-10';
 
 --11. Count the total number of books in the library
