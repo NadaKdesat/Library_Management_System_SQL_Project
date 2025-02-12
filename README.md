@@ -1,1 +1,2 @@
 # Library_Management_System_SQL_Project
+This project is a SQL-based Library Management System designed to handle books, members, borrowing, reservations, and staff. The database schema includes multiple interconnected tables, and SQL queries were implemented to perform essential operations like retrieving data, tracking book borrowing, managing reservations, and handling late returns. The project enhances SQL skills through practical database operations.
